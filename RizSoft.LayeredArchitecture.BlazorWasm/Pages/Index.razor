@@ -1,0 +1,34 @@
+﻿@page "/"
+
+
+<PageTitle>Index</PageTitle>
+
+<div class="text-center">
+    <h1>A sample of Layered Architecture</h1>
+</div>
+<h2 class="my-3">Northwind's Employee List</h2>
+
+@if (Employees != null)
+{
+    <table class="table border">
+        <tr>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+        </tr>
+        @foreach (var emp in Employees)
+        {
+            <tr>
+                <td>@emp.EmployeeId</td>
+                <td>@emp.FirstName</td>
+                <td>@emp.LastName</td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+

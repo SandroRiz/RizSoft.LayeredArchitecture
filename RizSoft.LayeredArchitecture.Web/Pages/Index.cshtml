@@ -1,0 +1,28 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">A sample of Layered Architecture</h1>
+
+
+<h2 class="my-3">Northwind's Employee List</h2>
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+    </tr>
+@foreach (var emp in Model.Employees)
+{   
+    <tr>
+        <td>@emp.EmployeeId</td>
+        <td>@emp.FirstName</td>
+        <td>@emp.LastName</td>
+    </tr>
+}
+</table>
+
+</div>
