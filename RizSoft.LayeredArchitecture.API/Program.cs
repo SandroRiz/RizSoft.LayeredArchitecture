@@ -43,7 +43,7 @@ app.UseHttpsRedirection();
 app.UseCors(MyAllowSpecificOrigins);
 
 app.MapGet("/employees", async ( IEmployeeService svc) =>
-    await svc.ListAsyncWithoutPhoto());
+    await svc.ListAsync());
 
 app.Run();
 

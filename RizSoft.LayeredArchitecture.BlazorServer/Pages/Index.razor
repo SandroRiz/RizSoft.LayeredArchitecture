@@ -26,10 +26,19 @@
             </tr>
         }
     </table>
+
+
+    <h2>Sample of multiple calls to DbContextFactory</h2>
+    <div class="row">
+    @foreach (var emp in Employees)
+    {
+        <div class="m-2 col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
+        <EmployeeCard EmployeeId="@emp.EmployeeId"></EmployeeCard>
+        </div>
+    }
+    </div>
 }
 else
 {
     <p>Loading...</p>
 }
-
-

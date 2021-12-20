@@ -1,79 +1,55 @@
-﻿namespace RizSoft.LayeredArchitecture.DAL.EfCore;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace RizSoft.LayeredArchitecture.DAL.EfCore;
 
 public class BaseRepository<T, Tkey> : IBaseRepository<T, Tkey>
 where T : class
 {
-    protected IDbContextFactory<NorthwindDbContext> CtxFactory { get; }
 
+    protected NorthwindDbContext Context { get; }
 
-    public BaseRepository(IDbContextFactory<NorthwindDbContext> ctxFactory)
+    public BaseRepository(NorthwindDbContext context)
     {
-        this.CtxFactory = ctxFactory;
+        this.Context = context;
     }
-    //public DbSet<T> Set => Context.Set<T>();
+    public DbSet<T> Set => Context.Set<T>();
 
     public virtual async Task AddAsync(T entity)
     {
-        using (var ctx = CtxFactory.CreateDbContext())
-        {
-            var Set = ctx.Set<T>();
-            Set.Add(entity);
-            await ctx.SaveChangesAsync();
-        }
+        Set.Add(entity);
+        await Context.SaveChangesAsync();
     }
 
     public virtual async Task DeleteAsync(T entity)
     {
-        using (var ctx = CtxFactory.CreateDbContext())
-        {
-            var Set = ctx.Set<T>();
-            ctx.Entry(entity).State = EntityState.Deleted;
-            await ctx.SaveChangesAsync();
-        }
+        Context.Entry(entity).State = EntityState.Deleted;
+        await Context.SaveChangesAsync();
     }
 
     public virtual async Task DeleteAsync(Tkey id)
     {
-        using (var ctx = CtxFactory.CreateDbContext())
-        {
-            var Set = ctx.Set<T>();
+        T entity = await Set.FindAsync(id);
 
-            T entity = await Set.FindAsync(id);
-
-            ctx.Entry(entity).State = EntityState.Deleted;
-            await ctx.SaveChangesAsync();
-        }
+        Context.Entry(entity).State = EntityState.Deleted;
+        await Context.SaveChangesAsync();
     }
 
     public virtual async Task<T> GetAsync(Tkey id)
     {
-        using (var ctx = CtxFactory.CreateDbContext())
-        {
-            var Set = ctx.Set<T>();
-            return await Set.FindAsync(id);
-        }
+        return await Set.FindAsync(id);
     }
 
     public virtual async Task<List<T>> ListAsync()
     {
-        using (var ctx = CtxFactory.CreateDbContext())
-        {
-            var Set = ctx.Set<T>();
-            return await Set.ToListAsync();
-        }
+        return await Set.ToListAsync();
     }
 
     public virtual async Task UpdateAsync(T entity)
     {
-        using (var ctx = CtxFactory.CreateDbContext())
-        {
-            var Set = ctx.Set<T>();
-            ctx.Entry(entity).State = EntityState.Modified;
+        Context.Entry(entity).State = EntityState.Modified;
 
-            await ctx.SaveChangesAsync();
-        }
+        await Context.SaveChangesAsync();
     }
 
 
 }
-
